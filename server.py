@@ -22,11 +22,8 @@ def upload_file(conn_socket: socket, file_name: str, file_size: int):
         retrieved_size = 0
         try:
             while retrieved_size < file_size:
-                # TODO: section 1 step 6a
                 chunk = conn_socket.recv(BUFFER_SIZE)
-                # TODO: section 1 stop 6b
                 retrieved_size += len(chunk)
-                # TODO: section 1 stop 6c
                 file.write(chunk)
         except OSError as oe:
             print(oe)
@@ -34,15 +31,12 @@ def upload_file(conn_socket: socket, file_name: str, file_size: int):
 
 def service_client_connection(conn_socket: socket):
     try:
-        # TODO: section 3 step 2
         message = conn_socket.recv(BUFFER_SIZE)
         # expecting an 8-byte byte string for file size followed by file name
-        # TODO: section 3 step 3
         message_info = get_file_info(message)
         file_name = message_info[0]
         file_size = message_info[1]
         print(f'Received: {file_name} with size = {file_size}')
-        # TODO: section 3 step 4
         upload_file(conn_socket, file_name, file_size)
     except Exception as e:
         print(e)
@@ -57,9 +51,7 @@ def start_server(ip, port):
     try:
         while True: # section 4 step 6
             (conn_socket, addr) = server_socket.accept() # section 4 step 3
-            # TODO: section 4 step 4
             server_thread = Thread(target=service_client_connection, daemon=True)
-            # TODO: section 4 step 5
             server_thread.start()
     except KeyboardInterrupt as ki:
         pass
